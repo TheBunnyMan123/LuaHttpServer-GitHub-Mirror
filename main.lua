@@ -24,7 +24,7 @@ function generatePage(head, tbl)
     finalhead = finalhead .. generateElement(v)
   end
   for _, v in ipairs(tbl) do
-    final = final .. generateElement(v)
+    final = final .. (type(v) == "string") or generateElement(v)
   end
 
   return ([[<!DOCTYPE HTML>
@@ -84,7 +84,7 @@ while true do
 
     if success then
       print("Sending page " .. page:gsub("^%.", ""))
-      client:send("HTTP/1.0 200 OK\n\n" .. func())
+      client:send("HTTP/1.0 200 OK\n\n" .. func(final))
     else
       client:send("HTTP/1.0 404 NOT FOUND\n\n" .. require("statuspages.404"))
     end
